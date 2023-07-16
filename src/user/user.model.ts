@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
-enum UserType {
+export enum UserType {
   BUYER = 'buyer',
   REALTOR = 'realtor',
   ADMIN = 'admin',

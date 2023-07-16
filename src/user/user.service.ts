@@ -51,6 +51,16 @@ export class UserService {
     }
   }
 
+  async findOneById(id: string): Promise<User | undefined> {
+    try {
+      const user = await this.userModel.findById(id);
+
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

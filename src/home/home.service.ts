@@ -1,28 +1,26 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { House } from './home.model';
-import { Model } from 'mongoose';
-import { CreateHomeDto } from './dto/CreateHomeDto';
+import { Injectable } from '@nestjs/common';
+import { CreateHomeDto } from './dto/create-home.dto';
+import { UpdateHomeDto } from './dto/update-home.dto';
 
 @Injectable()
 export class HomeService {
-  constructor(@InjectModel(House.name) private houseModel: Model<House>) {}
-  async getAllHouses() {
-    try {
-      return await this.houseModel.find();
-    } catch (error) {
-      throw new HttpException(
-        'Error Occurred',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+  create(createHomeDto: CreateHomeDto) {
+    return 'This action adds a new home';
   }
-  async createHome(body: CreateHomeDto) {
-    return await this.houseModel.create(body);
+
+  findAll() {
+    return `This action returns all home`;
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} home`;
+  }
+
+  update(id: number, updateHomeDto: UpdateHomeDto) {
+    return `This action updates a #${id} home`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} home`;
   }
 }
