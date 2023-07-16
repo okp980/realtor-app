@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { Image } from 'src/image/image.model';
 import { Message } from 'src/messages/message.model';
 
-enum PropertyType {
+export enum PropertyType {
   RESIDENTIAL = 'residential',
   CONDO = 'condo',
 }
@@ -42,9 +42,6 @@ export class Home {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   realtor: string;
-
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }])
-  messages: Message[];
 }
 
 export const HomeSchema = SchemaFactory.createForClass(Home);

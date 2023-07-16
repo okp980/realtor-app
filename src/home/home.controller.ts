@@ -21,13 +21,13 @@ import { RolesGuard } from 'src/auth/roles.guard';
 export class HomeController {
   constructor(private readonly homeService: HomeService) {}
 
-  @Roles(UserType.BUYER)
+  @Roles(UserType.REALTOR)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   create(@Body() createHomeDto: CreateHomeDto, @Request() req: any) {
     console.log(req.user);
 
-    return this.homeService.create(createHomeDto);
+    return this.homeService.create({ ...createHomeDto, realtor: req.user.id });
   }
 
   @Get()
@@ -37,16 +37,24 @@ export class HomeController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.homeService.findOne(+id);
+    return this.homeService.findOne(id);
   }
 
+  @Roles(UserType.REALTOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHomeDto: UpdateHomeDto) {
-    return this.homeService.update(+id, updateHomeDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateHomeDto: UpdateHomeDto,
+    @Request() req: any,
+  ) {
+    return this.homeService.update(id, updateHomeDto, req.user);
   }
 
+  @Roles(UserType.REALTOR)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.homeService.remove(+id);
+  remove(@Param('id') id: string, @Request() req: any) {
+    return this.homeService.remove(id, req.user);
   }
 }

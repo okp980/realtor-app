@@ -10,5 +10,6 @@ import { Image, ImageSchema } from './image.model';
   ],
   controllers: [ImageController],
   providers: [ImageService],
+  exports: [ImageService],
 })
 export class ImageModule {}

@@ -4,11 +4,17 @@ import { HomeController } from './home.controller';
 import { UserModule } from 'src/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Home, HomeSchema } from './home.model';
+import { ImageModule } from 'src/image/image.module';
+import { Image, ImageSchema } from 'src/image/image.model';
 
 @Module({
   imports: [
     UserModule,
-    MongooseModule.forFeature([{ name: Home.name, schema: HomeSchema }]),
+    MongooseModule.forFeature([
+      { name: Home.name, schema: HomeSchema },
+      { name: Image.name, schema: ImageSchema },
+    ]),
+    ImageModule,
   ],
   controllers: [HomeController],
   providers: [HomeService],
