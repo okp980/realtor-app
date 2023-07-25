@@ -10,6 +10,9 @@ import { Home } from './home.model';
 import { Model } from 'mongoose';
 import { ImageService } from 'src/image/image.service';
 import { Image } from 'src/image/image.model';
+import { MessagesService } from 'src/messages/messages.service';
+import { InquireDto } from './dto/inquire-home.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class HomeService {
@@ -17,6 +20,8 @@ export class HomeService {
     @InjectModel(Home.name) private homeModel: Model<Home>,
     @InjectModel(Image.name) private imageModel: Model<Image>,
     private readonly imageService: ImageService,
+    private readonly messagesService: MessagesService,
+    private readonly userService: UserService,
   ) {}
   async create(createHomeDto: CreateHomeServiceDto) {
     const { images, ...home } = createHomeDto;
@@ -90,5 +95,20 @@ export class HomeService {
     return {
       message: 'Deleted Successfully',
     };
+  }
+
+  async inquire(id: string, { message }: InquireDto, user: any) {
+    const realtor: any = await this.userService.findRealtorByHome(id);
+
+    return this.messagesService.create({
+      buyer: user.id as string,
+      home: id,
+      message,
+      realtor: realtor.id,
+    });
+  }
+
+  async home_messages(id: string) {
+    return await this.messagesService.find({ home: id });
   }
 }
