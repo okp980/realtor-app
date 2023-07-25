@@ -8,23 +8,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './user.model';
 import { Model } from 'mongoose';
+import { Home } from 'src/home/home.model';
 
 @Injectable()
 export class UserService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Home.name) private homeModel: Model<Home>,
+  ) {}
 
   async createUser(
     createUserDto: CreateUserDto,
@@ -37,10 +28,6 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
-
   async findOne(email: string): Promise<User | undefined> {
     try {
       const user = await this.userModel.findOne({ email }).select('+password');
@@ -51,6 +38,13 @@ export class UserService {
     }
   }
 
+  async findRealtorByHome(id: string) {
+    const foundHome = await this.homeModel.findById(id).populate('realtor');
+    console.log(foundHome);
+
+    return foundHome.realtor;
+  }
+
   async findOneById(id: string): Promise<User | undefined> {
     try {
       const user = await this.userModel.findById(id);
@@ -59,13 +53,5 @@ export class UserService {
     } catch (error) {
       throw new InternalServerErrorException();
     }
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
   }
 }

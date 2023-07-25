@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './user.model';
 import * as bcrypt from 'bcrypt';
+import { Home, HomeSchema } from 'src/home/home.model';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import * as bcrypt from 'bcrypt';
           return schema;
         },
       },
+      { name: Home.name, useFactory: () => HomeSchema },
     ]),
   ],
   controllers: [UserController],
